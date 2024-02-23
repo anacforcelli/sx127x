@@ -1,4 +1,4 @@
-#include <stropts.h>
+#include <sys/ioctl.h>
 #include "common.h"
 
 
@@ -30,18 +30,11 @@ int setupradio(int fd, enum sx127x_opmode opmode) {
 		return 1;
 	}
 
-	if (ioctl(fd, SX127X_IOCTL_CMD_SETCARRIERFREQUENCY, 920000000) != 0) {
-		printf("failed to set carrier frequency\n");
-		return 1;
-	}
-
-	if (ioctl(fd, SX127X_IOCTL_CMD_SETSF, 12) != 0) {
-		printf("failed to set spreading factor\n");
-		return 1;
-	}
 
 	if (ioctl(fd, SX127X_IOCTL_CMD_SETOPMODE, opmode) != 0) {
 		printf("failed to set opmode\n");
 		return 1;
 	}
+	
+	ioctl(fd, SX127X_IOCTL_CMD_DUMPREGS);
 }
